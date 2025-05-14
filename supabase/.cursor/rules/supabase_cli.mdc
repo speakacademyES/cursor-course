@@ -1,0 +1,21 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Supabase CLI
+https://supabase.com/docs/reference/cli/introduction
+Last Updated: May 14, 2025
+
+The Supabase CLI provides tools to develop your project locally and deploy to the Supabase Platform.
+The CLI is still under development, but it contains all the functionality for working with your Supabase projects and the Supabase Platform.
+
+Run Supabase locally: supabase init and supabase start
+Manage database migrations: supabase migration
+CI/CD for releasing to production: supabase db push
+Manage your Supabase projects: supabase projects
+Generate types directly from your database schema: supabase gen types
+A community-supported GitHub Action to generate TypeScript types
+Shell autocomplete: supabase completion
+A community-supported Fig autocomplete spec for macOS terminal
+

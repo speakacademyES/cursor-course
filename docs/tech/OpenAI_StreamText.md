@@ -149,4 +149,3 @@ Moderation risk
 ---------------
 
 Note that streaming the model's output in a production application makes it more difficult to moderate the content of the completions, as partial completions may be more difficult to evaluate. This may have implications for approved usage.
-

@@ -3,11 +3,25 @@ import React, { useState } from "react";
 interface ChatInputProps {
   onSendMessage: (message: string, generateImage?: boolean) => void;
   isLoading: boolean;
+  isImageMode: boolean;
+  setIsImageMode: (mode: boolean) => void;
 }
 
-export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
+export default function ChatInput({
+  onSendMessage,
+  isLoading,
+  isImageMode,
+  setIsImageMode,
+}: ChatInputProps) {
   const [input, setInput] = useState("");
-  const [isImageMode, setIsImageMode] = useState(false);
+
+  // Example image prompts
+  const examplePrompts = [
+    "Create an image of a magazine cover of cute animals with headlines and text",
+    "Create an image for a garden-themed birthday party invitation",
+    "Create an image of an astronaut with an inflatable duck on Mars",
+    "Create an image of a tutorial for cooking pasta",
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,46 +31,59 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
     setInput("");
   };
 
+  const handleExampleClick = (prompt: string) => {
+    setInput(prompt);
+  };
+
   // Determine the placeholder text based on current state
   const getPlaceholderText = () => {
     if (isLoading) {
       return isImageMode ? "Generating image..." : "Streaming response...";
     }
-    return isImageMode ? "Describe the image you want to generate..." : "What's on your mind?";
+    return isImageMode
+      ? "Describe the image you want to generate..."
+      : "What's on your mind?";
   };
 
   return (
     <div className="border-t p-4">
-      {/* Image generation toggle as a small control above the input */}
+      {/* Example prompts - show in image mode */}
       {isImageMode && (
-        <div className="mb-2 text-xs text-purple-600 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3 mr-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          Image Mode enabled
+        <div className="mb-4">
+          <div className="space-y-2">
+            {examplePrompts.map((prompt, index) => (
+              <div
+                key={index}
+                onClick={() => handleExampleClick(prompt)}
+                className="text-sm text-gray-600 py-1 px-2 hover:bg-gray-100 rounded cursor-pointer"
+              >
+                {prompt}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="relative">
         {/* Main input field with the circular send button */}
         <div className="relative">
+          {isImageMode && (
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 flex">
+              <span className="text-blue-500 font-medium">Create image</span>
+            </div>
+          )}
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={getPlaceholderText()}
-            className={`w-full py-3 px-4 pr-12 text-gray-700 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300 focus:bg-white ${
+            placeholder={
+              isImageMode
+                ? "Describe the image you want to generate..."
+                : "What's on your mind?"
+            }
+            className={`w-full py-3 ${
+              isImageMode ? "pl-36" : "px-4"
+            } pr-12 text-gray-700 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300 focus:bg-white ${
               isLoading ? "opacity-70" : ""
             }`}
             disabled={isLoading}
@@ -67,7 +94,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
               isLoading || !input.trim()
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : isImageMode
-                ? "bg-purple-600 text-white"
+                ? "bg-blue-500 text-white"
                 : "bg-blue-500 text-white"
             }`}
             disabled={isLoading || !input.trim()}
@@ -118,7 +145,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
             onClick={() => setIsImageMode(!isImageMode)}
             className={`text-xs px-2 py-1 rounded-full transition-colors ${
               isImageMode
-                ? "bg-purple-100 text-purple-700 border border-purple-300"
+                ? "bg-blue-100 text-blue-700 border border-blue-300"
                 : "bg-gray-100 text-gray-600 border border-gray-200"
             }`}
             disabled={isLoading}
@@ -127,7 +154,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           </button>
 
           <span className="text-xs text-gray-400">
-            {isImageMode ? "Generating images requires an API key" : ""}
+            {isImageMode ? "Click on an example or type your image prompt" : ""}
           </span>
         </div>
       </form>
