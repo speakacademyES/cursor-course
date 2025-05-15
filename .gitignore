@@ -55,3 +55,6 @@ tasks/
 # Temporary and branch folders
 .branches/
 .temp/
+# Supabase specific
+supabase/.branches/
+supabase/.temp/
