@@ -222,10 +222,14 @@ export default function ChatPanel() {
       {/* Chat header - simplified */}
       <div className="p-4 border-b flex justify-between items-center bg-white shadow-sm">
         <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-green-200 mr-3 flex items-center justify-center overflow-hidden border-2 border-white shadow">
-            <span className="text-sm font-medium text-green-800">M</span>
+          <div className="w-10 h-10 rounded-full mr-3 flex items-center justify-center overflow-hidden border-2 border-white shadow bg-white">
+            <img
+              src="/openai.png"
+              alt="OpenAI Logo"
+              className="w-6 h-6 object-contain"
+            />
           </div>
-          <h2 className="font-medium text-gray-700">matchya</h2>
+          <h2 className="font-medium text-gray-700">ChatGPT</h2>
         </div>
 
         <div className="flex items-center space-x-2">
