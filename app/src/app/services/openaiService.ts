@@ -7,6 +7,12 @@ interface ImageGenerationResponse {
   error?: string;
 }
 
+// Message format for API calls
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
 // Base URL for Supabase functions
 const FUNCTION_BASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL + "/functions/v1/chat";
@@ -15,6 +21,7 @@ console.log("FUNCTION_BASE_URL", FUNCTION_BASE_URL);
 // Supabase anon key for authorization (should be available from env)
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 console.log("SUPABASE_ANON_KEY", SUPABASE_ANON_KEY);
+
 /**
  * Generate an image using OpenAI's Image API via Supabase Edge Function
  */
@@ -88,12 +95,12 @@ export async function generateImage(
 
 /**
  * Stream a text completion from OpenAI Chat API via Supabase Edge Function
- * @param prompt The user's message
+ * @param messages Array of messages representing the conversation history
  * @param onChunk Callback function to handle each chunk of the response
  * @returns An object indicating success or failure
  */
 export async function streamTextCompletion(
-  prompt: string,
+  messages: Message[],
   onChunk: (chunk: string) => void
 ): Promise<{ success: boolean; error?: string }> {
   const apiKey = getCookie(COOKIE_NAMES.API_KEY);
@@ -114,7 +121,7 @@ export async function streamTextCompletion(
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         "x-openai-key": apiKey,
       },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({ messages }),
     });
 
     if (!response.ok) {

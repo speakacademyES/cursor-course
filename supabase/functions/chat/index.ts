@@ -118,7 +118,7 @@ async function generateImage(prompt: string): Promise<ImageGenerationResponse> {
 /**
  * Stream text completion from OpenAI
  */
-async function streamTextCompletion(req: Request) {
+async function streamTextCompletion(req: Request, parsedMessages?: any) {
   const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") || "";
 
   if (!OPENAI_API_KEY) {
@@ -136,8 +136,12 @@ async function streamTextCompletion(req: Request) {
   }
 
   try {
-    const { prompt } = await req.json();
-    console.log("Starting completion for prompt:", prompt);
+    // Use passed messages if available, otherwise parse from request
+    const messages = parsedMessages || (await req.json()).messages;
+    console.log(
+      "Starting completion with messages:",
+      JSON.stringify(messages).substring(0, 200) + "..."
+    );
 
     // Create a TransformStream for streaming responses
     const encoder = new TextEncoder();
@@ -163,12 +167,7 @@ async function streamTextCompletion(req: Request) {
       },
       body: JSON.stringify({
         model: "gpt-4o",
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
+        messages: messages,
         stream: true,
       }),
     })
@@ -361,8 +360,44 @@ Deno.serve(async (req) => {
           }
         );
       } else {
-        // Process actual streaming
-        return await streamTextCompletion(req);
+        try {
+          const requestData = await req.json();
+          if (!requestData.messages) {
+            console.log("Missing 'messages' parameter for stream-completion");
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error:
+                  "Missing 'messages' parameter. Expected an array of conversation messages.",
+              }),
+              {
+                status: 400,
+                headers: {
+                  ...corsHeaders,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+          }
+          // Process actual streaming with the parsed messages
+          return await streamTextCompletion(req, requestData.messages);
+        } catch (error) {
+          console.log("Invalid request format:", error);
+          return new Response(
+            JSON.stringify({
+              success: false,
+              error:
+                "Invalid request format. Expected a JSON object with 'messages' array.",
+            }),
+            {
+              status: 400,
+              headers: {
+                ...corsHeaders,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        }
       }
     } else {
       // Default response for testing basic connectivity

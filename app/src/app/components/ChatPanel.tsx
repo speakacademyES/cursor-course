@@ -16,6 +16,12 @@ interface Message {
   isStreaming?: boolean; // Flag to indicate a message is currently streaming
 }
 
+// Message format to send to the API
+interface MessageForAPI {
+  role: "user" | "assistant";
+  content: string;
+}
+
 export default function ChatPanel() {
   // State for messages and input
   const [messages, setMessages] = useState<Message[]>([
@@ -36,6 +42,15 @@ export default function ChatPanel() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Convert messages to API format (exclude system messages, IDs, etc.)
+  const getMessageHistoryForAPI = (): MessageForAPI[] => {
+    // Skip the first welcome message as it's not part of the actual conversation
+    return messages.slice(1).map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+  };
 
   // Handle sending a new message
   const handleSendMessage = async (
@@ -144,8 +159,14 @@ export default function ChatPanel() {
       ]);
 
       try {
-        // Stream the text completion
-        await streamTextCompletion(message, (chunk) => {
+        // Get conversation history for context
+        const messageHistory = getMessageHistoryForAPI();
+
+        // Add the current message
+        messageHistory.push({ role: "user", content: message });
+
+        // Stream the text completion with full conversation history
+        await streamTextCompletion(messageHistory, (chunk) => {
           // Update the streaming message with each chunk
           setMessages((prev) =>
             prev.map((msg) =>
