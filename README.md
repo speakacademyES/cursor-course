@@ -85,3 +85,5 @@ npx supabase functions serve --import-map ./supabase/functions/import_map.json
 
 Instructions
 - Rename .env.example to .env in `supabase/functions/.env` and add your OPENAI_API_KEY
+// fake edit 1
+// fake edit 2
