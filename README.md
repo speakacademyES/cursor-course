@@ -1,4 +1,5 @@
 # Vibe Coding with Cursor Course
+Eric was here
 
 ## Udemy Course
 Use Cursor to Vibe Code Full Stack Apps (MCP, NextJS, Supabase)
