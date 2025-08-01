@@ -58,3 +58,5 @@ tasks/
 # Supabase specific
 supabase/.branches/
 supabase/.temp/
+# Cursor IDE configuration (contains API keys)
+.cursor/
