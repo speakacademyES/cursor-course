@@ -1,0 +1,85 @@
+# Cursor IDE ignore patterns
+# Files and directories to exclude from AI operations
+
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+*.egg
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.cache
+
+# Logs and temporary files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.tmp/
+temp/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Documentation build
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Git
+.git/
+.gitignore
+
+# Security and sensitive files
+*.pem
+*.key
+*.crt
+*.csr
+secrets/
+credentials/
