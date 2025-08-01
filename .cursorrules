@@ -1,0 +1,50 @@
+# Cursor IDE Rules for this project
+
+## Code Style & Standards
+- Use TypeScript for new JavaScript files when possible
+- Follow PEP 8 for Python code
+- Use meaningful variable and function names
+- Add type hints to Python functions
+- Prefer async/await over promises in JavaScript
+- Use error handling and logging consistently
+
+## Project Structure
+- Keep main logic in src/ or lib/ folders
+- Place tests next to the code they test
+- Use docs/requirements/ for PRDs and specifications
+- Use docs/architecture/ for technical documentation
+- Follow the established folder structure
+
+## AI/ML Best Practices
+- Always validate API keys before making requests
+- Implement cost tracking for AI API calls
+- Add rate limiting to prevent quota exhaustion
+- Log API usage and errors
+- Use structured logging format
+- Mask sensitive data in logs
+
+## Security Requirements
+- Never commit API keys or secrets
+- Validate all user inputs
+- Use environment variables for configuration
+- Implement proper error handling
+- Follow the principle of least privilege
+
+## Testing & Quality
+- Write tests for new features
+- Maintain good test coverage
+- Use meaningful test names
+- Run security checks before commits
+- Format code with black (Python) and prettier (JS)
+
+## Documentation
+- Update README when adding features
+- Document API endpoints and functions
+- Include examples in code comments
+- Keep requirements documentation current
+
+## Git Workflow
+- Use descriptive commit messages
+- Work on feature branches for new development
+- Keep main branch stable and production-ready
+- Use development branch for integration testing
